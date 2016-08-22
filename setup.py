@@ -1,4 +1,4 @@
-default_sensors = "Ping,HTTP,Port,SNMPCustom,CPULoad,Memory,Diskspace,SNMPTraffic,CPUTemp,Probehealth,ExternalIP,ADNS,APT,NMAP,MDADM"
+default_sensors = "Ping,HTTP,Port,MPLSLatency,SNMPCustom,CPULoad,Memory,Diskspace,SNMPTraffic,CPUTemp,Probehealth,ExternalIP,ADNS,APT,NMAP,MDADM"
 #!/usr/bin/env python
 # Copyright (c) 2014, Paessler AG <support@paessler.com>
 # All rights reserved.
@@ -75,7 +75,7 @@ class Configure(_install):
         if self.file_check(self.path):
             print("")
             probe_config_exists = "%s" % str(raw_input(Bcolor.YELLOW + "A config file was already found. "
-                                                                       "Do you want to reconfigure [y/N]: " 
+                                                                       "Do you want to reconfigure [y/N]: "
                                                        + Bcolor.END)).rstrip().lstrip()
             if probe_config_exists.lower() == "y":
                 config_old = self.read_config(self.path)
@@ -152,7 +152,7 @@ class Configure(_install):
         return init_script_tpl.read() % (script_path, user)
 
     def write_load_list(self, ds18b20_sensors, other_sensors):
-        default_sensors = "Ping,HTTP,Port,SNMPCustom,CPULoad,Memory,Diskspace,SNMPTraffic,CPUTemp,Probehealth,ExternalIP,ADNS,APT,NMAP,MDADM"
+        default_sensors = "Ping,HTTP,Port,SNMPCustom,MPLSLatency,CPULoad,Memory,Diskspace,SNMPTraffic,CPUTemp,Probehealth,ExternalIP,ADNS,APT,NMAP,MDADM"
         if not (other_sensors == ""):
             default_sensors = default_sensors + "," + other_sensors
         file_sensor_init = open("./miniprobe/sensors/__init__.py", "a")
@@ -235,7 +235,7 @@ class Configure(_install):
             file_boot_config.write('\n#w1-gpio added by PRTG MiniProbe install script\n')
             file_boot_config.write('dtoverlay=w1-gpio')
             file_boot_config.close()
-            print(Bcolor.GREEN + "Please restart the installscript after the Raspberry Pi has been rebooted!" 
+            print(Bcolor.GREEN + "Please restart the installscript after the Raspberry Pi has been rebooted!"
                   + Bcolor.END)
             print(Bcolor.GREEN + "Now rebooting..." + Bcolor.END)
             print(subprocess.call("reboot", shell=True))
@@ -266,7 +266,7 @@ class Configure(_install):
             return default
 
     def get_config_name(self, default):
-        tmp_name = "%s" % str(raw_input(Bcolor.GREEN + "Please provide the desired name of your Mini Probe [" 
+        tmp_name = "%s" % str(raw_input(Bcolor.GREEN + "Please provide the desired name of your Mini Probe ["
                                         + default + "]: " + Bcolor.END)).rstrip().lstrip()
         if not tmp_name == "":
             return tmp_name
@@ -274,7 +274,7 @@ class Configure(_install):
             return default
 
     def get_config_gid(self, default):
-        tmp_gid = "%s" % str(raw_input(Bcolor.GREEN + "Please provide the Probe GID [" + default + "]: " 
+        tmp_gid = "%s" % str(raw_input(Bcolor.GREEN + "Please provide the Probe GID [" + default + "]: "
                                        + Bcolor.END)).rstrip().lstrip()
         if not tmp_gid == "":
             return tmp_gid
@@ -282,16 +282,16 @@ class Configure(_install):
             return default
 
     def get_config_ip(self, default=None):
-        tmp_ip = "%s" % str(raw_input(Bcolor.GREEN + "Please provide the IP/DNS name of the PRTG Core Server [" 
+        tmp_ip = "%s" % str(raw_input(Bcolor.GREEN + "Please provide the IP/DNS name of the PRTG Core Server ["
                                       + default + "]: " + Bcolor.END)).rstrip().lstrip()
         if not (tmp_ip == "") or not (default == ""):
             if (tmp_ip == "") and not (default == ""):
                 tmp_ip = default
             response = os.system("ping -c 1 " + tmp_ip + " > /dev/null")
             if not response == 0:
-                print(Bcolor.YELLOW + "PRTG Server can not be reached. Please make sure the server is reachable." 
+                print(Bcolor.YELLOW + "PRTG Server can not be reached. Please make sure the server is reachable."
                       + Bcolor.END)
-                go_on = "%s" % str(raw_input(Bcolor.YELLOW + "Do you still want to continue using this server [y/N]: " 
+                go_on = "%s" % str(raw_input(Bcolor.YELLOW + "Do you still want to continue using this server [y/N]: "
                                              + Bcolor.END)).rstrip().lstrip()
                 if not go_on.lower() == "y":
                     return self.get_config_ip()
@@ -327,7 +327,7 @@ class Configure(_install):
             tmp_accesskey = default
         else:
             if tmp_accesskey == "":
-                print(Bcolor.YELLOW + "You have not provided the Probe Access Key as defined on the PRTG Core." 
+                print(Bcolor.YELLOW + "You have not provided the Probe Access Key as defined on the PRTG Core."
                       + Bcolor.END)
                 return self.get_config_access_key(default)
             else:
@@ -335,7 +335,7 @@ class Configure(_install):
 
     def get_config_path(self, default=os.path.dirname(os.path.abspath(__file__))):
         default += "/miniprobe"
-        tmp_path = "%s" % str(raw_input(Bcolor.GREEN + "Please provide the path where the probe files are located [" 
+        tmp_path = "%s" % str(raw_input(Bcolor.GREEN + "Please provide the path where the probe files are located ["
                                         + default + "]: " + Bcolor.END)).rstrip().lstrip()
         if not tmp_path == "":
             return tmp_path
@@ -351,7 +351,7 @@ class Configure(_install):
             return "False"
 
     def get_config_subprocs(self, default="10"):
-        tmp_subprocs = "%s" % str(raw_input(Bcolor.GREEN + "How much subprocesses should be spawned for scanning [" 
+        tmp_subprocs = "%s" % str(raw_input(Bcolor.GREEN + "How much subprocesses should be spawned for scanning ["
                                             + default + "]: " + Bcolor.END)).rstrip().lstrip()
         if not tmp_subprocs == "":
             return tmp_subprocs
@@ -367,12 +367,12 @@ class Configure(_install):
         return default
 
     def get_config_debug(self, default):
-        tmp_debug = "%s" % str(raw_input(Bcolor.GREEN + "Do you want to enable debug logging (" + Bcolor.YELLOW + 
-                                         "can create massive logfiles!" + Bcolor.GREEN + ") [y/N]: " 
+        tmp_debug = "%s" % str(raw_input(Bcolor.GREEN + "Do you want to enable debug logging (" + Bcolor.YELLOW +
+                                         "can create massive logfiles!" + Bcolor.GREEN + ") [y/N]: "
                                          + Bcolor.END)).rstrip().lstrip()
         if tmp_debug.lower() == "y":
             tmp_debug1 = "%s" % str(raw_input(Bcolor.YELLOW + "Are you sure you want to enable debug logging? "
-                                                              "This will create massive logfiles [y/N]: " 
+                                                              "This will create massive logfiles [y/N]: "
                                               + Bcolor.END)).rstrip().lstrip()
             if tmp_debug1.lower() == "y":
                 return "True"
