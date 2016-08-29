@@ -1,4 +1,4 @@
-default_sensors = "Ping,HTTP,Port,MPLSLatency,SNMPCustom,CPULoad,Memory,Diskspace,SNMPTraffic,CPUTemp,Probehealth,ExternalIP,ADNS,APT,NMAP,MDADM"
+default_sensors = "Ping,HTTP,Port,Latency,SNMPCustom,CPULoad,Memory,Diskspace,SNMPTraffic,CPUTemp,Probehealth,ExternalIP,ADNS,APT,NMAP,MDADM"
 #!/usr/bin/env python
 # Copyright (c) 2014, Paessler AG <support@paessler.com>
 # All rights reserved.
@@ -152,7 +152,7 @@ class Configure(_install):
         return init_script_tpl.read() % (script_path, user)
 
     def write_load_list(self, ds18b20_sensors, other_sensors):
-        default_sensors = "Ping,HTTP,Port,SNMPCustom,MPLSLatency,CPULoad,Memory,Diskspace,SNMPTraffic,CPUTemp,Probehealth,ExternalIP,ADNS,APT,NMAP,MDADM"
+        default_sensors = "Ping,HTTP,Port,SNMPCustom,Latency,CPULoad,Memory,Diskspace,SNMPTraffic,CPUTemp,Probehealth,ExternalIP,ADNS,APT,NMAP,MDADM"
         if not (other_sensors == ""):
             default_sensors = default_sensors + "," + other_sensors
         file_sensor_init = open("./miniprobe/sensors/__init__.py", "a")
