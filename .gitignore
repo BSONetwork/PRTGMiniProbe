@@ -1,7 +1,6 @@
 *.pyc
 *.log
 *.gz
-*.conf
 sensors/__init__.py
 dist
 *.egg-info
